@@ -1,10 +1,9 @@
 <script>
-  import { user } from '../../App.svelte';
+  import { user } from '../../lib/userStore';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
 
   onMount(() => {
-    // Verificar se o usuário está autenticado
     if (!$user) {
       goto('/');
     }
