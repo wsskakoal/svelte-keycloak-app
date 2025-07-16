@@ -13,8 +13,8 @@
 {#if $user}
   <h1>Página Protegida</h1>
   <p>Conteúdo exclusivo para usuários autenticados.</p>
-  <p>Nome: {$user.profile.name || $user.profile.sub}</p>
-  <p>Email: {$user.profile.email}</p>
+  <!-- <p>Nome: {$user?.profile?.name || $user.profile.sub}</p>
+  <p>Email: {$user.profile.email}</p> -->
   <a href="/">Voltar para Home</a>
 {:else}
   <p>Redirecionando...</p>

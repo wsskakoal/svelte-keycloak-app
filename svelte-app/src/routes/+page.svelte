@@ -1,10 +1,10 @@
 <script>
 // @ts-nocheck
-
   import { onMount } from 'svelte';
   import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
   import { goto } from '$app/navigation';
   import { user } from '../lib/userStore';
+  import {jwtDecode} from 'jwt-decode';
 
   // @ts-ignore
   let userManager;
@@ -12,8 +12,8 @@
   onMount(() => {
     if (typeof window !== 'undefined') {
       userManager = new UserManager({
-        authority: 'http://localhost:8080/realms/myapp-realm',
-        client_id: 'svelte-app',
+        authority: 'http://localhost:8080/realms/alfa-contabilidade',
+        client_id: 'alfa-contabilidade-openid',
         client_secret: 'CFthSJmeLpsKlSL58uQS8mtCrAoSHpQA', // Substitua pelo Client Secret do Keycloak
         redirect_uri: 'http://localhost:5173/callback',
         post_logout_redirect_uri: 'http://localhost:5173',
@@ -26,6 +26,20 @@
         if (userData) {
           // @ts-ignore
           user.set(userData);
+      
+          // Decodifica o token de acesso
+    const decodedToken = jwtDecode(userData.access_token);
+
+    // Exibe as permissões (roles) do realm
+    console.log('Realm Roles:', decodedToken.realm_access?.roles);
+
+    // Exibe as permissões por client (se configuradas no client)
+    console.log('Client Roles:', decodedToken.resource_access?.['alfa-contabilidade-openid']?.roles);
+
+    // Exemplo: checar se tem uma role específica
+    if (decodedToken.realm_access?.roles.includes('financeiro')) {
+      console.log('Usuário é financeiro');
+    }
         }
       }).catch(error => {
         console.error('Erro ao carregar usuário:', error);
@@ -63,6 +77,7 @@
 <main>
   {#if $user}
     <h1>Bem-vindo, {$user.profile.name || $user.profile.sub}</h1>
+    <p>Email: {$user.profile.email}</p>
     <p>Email: {$user.profile.email}</p>
     <button on:click={logout}>Logout</button>
     <a href="/protected">Acessar Página Protegida</a>

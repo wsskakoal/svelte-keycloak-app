@@ -9,9 +9,9 @@
   onMount(() => {
     if (typeof window !== 'undefined') {
       userManager = new UserManager({
-        authority: 'http://localhost:8080/realms/myapp-realm',
-        client_id: 'svelte-app',
-        client_secret: 'SEU_CLIENT_SECRET_AQUI', // Substitua pelo Client Secret do Keycloak
+        authority: 'http://localhost:8080/realms/alfa-contabilidade',
+        client_id: 'alfa-contabilidade-openid',
+        client_secret: 'CFthSJmeLpsKlSL58uQS8mtCrAoSHpQA', // Substitua pelo Client Secret do Keycloak
         redirect_uri: 'http://localhost:5173/callback',
         post_logout_redirect_uri: 'http://localhost:5173',
         response_type: 'code',
